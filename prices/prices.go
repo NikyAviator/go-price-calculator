@@ -1,11 +1,10 @@
 package prices
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 
 	"github.com/NikyAviator/go-price-calculator/conversion"
+	"github.com/NikyAviator/go-price-calculator/filemanager"
 )
 
 type TaxIncludedPriceJob struct {
@@ -15,40 +14,22 @@ type TaxIncludedPriceJob struct {
 }
 
 func (job *TaxIncludedPriceJob) LoadData() {
-	file, err := os.Open("prices/prices.txt")
+
+	lines, err := filemanager.ReadLines("prices/prices.txt")
 
 	if err != nil {
-		fmt.Println("An Error occured!")
 		fmt.Println(err)
-		return
-	}
-
-	scanner := bufio.NewScanner(file)
-
-	var lines []string
-
-	for scanner.Scan() {
-		// lines will hold all the prices in the prices.txt file
-		lines = append(lines, scanner.Text())
-	}
-	scannerErr := scanner.Err()
-
-	if scannerErr != nil {
-		fmt.Println("An Error occured while scanning the file!")
-		fmt.Println(scannerErr)
-		file.Close()
 		return
 	}
 
 	prices, err := conversion.StringsToFloats(lines)
 	if err != nil {
 		fmt.Println(err)
-		file.Close()
 		return
 	}
 
 	job.InputPrices = prices
-	file.Close()
+
 }
 
 func (job *TaxIncludedPriceJob) Process() {

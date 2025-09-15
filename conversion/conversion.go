@@ -13,7 +13,7 @@ func StringsToFloats(strings []string) ([]float64, error) {
 		floatValue, err := strconv.ParseFloat(stringValue, 64)
 
 		if err != nil {
-			return nil, errors.New("An Error occured while converting string to float, my little gopher!")
+			return nil, errors.New("an Error occured while converting string to float")
 		}
 		floats = append(floats, floatValue)
 	}
